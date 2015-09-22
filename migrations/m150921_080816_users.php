@@ -19,14 +19,4 @@ class m150921_080816_users extends Migration
         $this->dropTable('users');
     }
 
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }

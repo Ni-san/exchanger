@@ -94,4 +94,17 @@ class Users extends ActiveRecord
 
         $user->save();
     }
+
+
+    public static function addUser($name) {
+        $user = self::find()
+            ->where(['name' => $name])
+        ;
+
+        if($user === null) {
+            $user = new self();
+            $user->name = $name;
+            $user->save();
+        }
+    }
 }

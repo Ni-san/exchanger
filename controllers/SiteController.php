@@ -81,9 +81,18 @@ class SiteController extends Controller {
 
         $postData = Yii::$app->getRequest()->post();
 
+        if(isset($postData['checkUserName'])) {
+            $user = Users::find()
+                ->where(['name' => $postData['checkUserName']])
+                ->one()
+            ;
+
+            return $user === null;
+        }
+
         if(isset($postData['Users'])) {
-            $model->name = $postData['Users']['name'];
-            $model->save();
+            Users::addUser($postData['Users']['name']);
+
             $this->goHome();
         }
 

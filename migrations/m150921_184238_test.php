@@ -9,13 +9,13 @@ class m150921_184238_test extends Migration
     {
         $this->batchInsert(
             'users',
-            ['id', 'name', 'sum'],
+            ['name', 'sum'],
             [
-                [1, 'first',  100],
-                [2, 'second', 200],
-                [3, 'third',  300],
-                [4, 'fourth', 400],
-                [5, 'fifth',  500],
+                ['first',  100],
+                ['second', 200],
+                ['third',  300],
+                ['fourth', 400],
+                ['fifth',  500],
             ]
         );
     }
@@ -24,7 +24,15 @@ class m150921_184238_test extends Migration
     {
         $this->delete(
             'users',
-            ['id' => [1, 2, 3, 4, 5]]
+            [
+                'name' => [
+                    'first',
+                    'second',
+                    'third',
+                    'fourth',
+                    'fifth',
+                ]
+            ]
         );
     }
 }

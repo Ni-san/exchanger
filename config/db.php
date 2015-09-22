@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'pgsql:host=localhost;dbname=test_db',
-    'username' => 'test',
-    'password' => 'test',
+    'dsn' => 'pgsql:host=pg.sweb.ru;dbname=iovis',
+    'username' => 'iovis',
+    'password' => 'sDLIPN47c',
     'charset' => 'utf8',
 ];

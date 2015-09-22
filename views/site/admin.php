@@ -9,12 +9,15 @@ $this->title = 'Admin';
 
     <h2>Добавить пользователя</h2>
     <div class="row">
-        <?php $form = \yii\bootstrap\ActiveForm::begin(); ?>
+        <?php $form = \yii\bootstrap\ActiveForm::begin(['id' => 'add-user-form']); ?>
         <div class="col-md-6">
             <?= $form->field($model, 'name') ?>
         </div>
         <div class="col-md-6">
-            <?= \yii\helpers\Html::submitButton('Добавить', ['class' => 'btn btn-primary']) ?>
+            <?= \yii\helpers\Html::submitButton('Добавить', [
+                'class' => 'btn btn-primary',
+                'id' => 'add-user-button',
+            ]) ?>
         </div>
 
         <?php \yii\bootstrap\ActiveForm::end(); ?>
