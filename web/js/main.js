@@ -1,4 +1,6 @@
 jQuery(document).ready(function () {
+
+    // Обработчик для добавления пользователя
     jQuery('#add-user-button').click(function (e) {
         e.preventDefault();
 
@@ -18,15 +20,21 @@ jQuery(document).ready(function () {
     });
 });
 
+/**
+ * Добавление денег на счёт
+ *
+ * @param id
+ */
 function addMoney(id) {
     var moneyToAdd = jQuery('#add-money-' + id).val();
+
+    // Замена запятых на точки
     moneyToAdd = moneyToAdd.replace(/,/, '.');
 
+    // Проверка, является ли введённая строка положительным числом с фиксированной точкой
     if(!/^\d*\.?\d*$/.test(moneyToAdd)) {
         alert('Введите положительное число');
-        return;
     } else {
-
         jQuery.ajax({
             method: 'post',
             data: {
@@ -38,6 +46,7 @@ function addMoney(id) {
                     jQuery('#user-sum-' + id).html(data);
                     jQuery('#add-money-' + id).val('');
                 } else {
+                    // Сообщение об ошибке
                     alert(data);
                 }
             }

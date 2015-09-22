@@ -5,8 +5,15 @@ namespace app\models;
 use yii\base\Object;
 use yii\web\IdentityInterface;
 
-class User extends Object implements IdentityInterface
-{
+/**
+ * Стандартный класс из Yii 2 Basic Template
+ * модифицирован для работы с пользователями из базы
+ *
+ * Class User
+ *
+ * @package app\models
+ */
+class User extends Object implements IdentityInterface {
     public $id;
     public $username;
     public $password;
@@ -15,10 +22,10 @@ class User extends Object implements IdentityInterface
 
     private static $users = [
         '0' => [
-            'id' => '0',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
+            'id'          => '0',
+            'username'    => 'admin',
+            'password'    => 'admin',
+            'authKey'     => 'test100key',
             'accessToken' => '100-token',
         ],
     ];
@@ -26,11 +33,10 @@ class User extends Object implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
-    {
-        if(isset(self::$users[$id])) {
+    public static function findIdentity($id) {
+        if(isset(self::$users[ $id ])) {
 
-            return new static(self::$users[$id]);
+            return new static(self::$users[ $id ]);
         }
 
         return self::findUser((int)$id);
@@ -39,10 +45,10 @@ class User extends Object implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
+    public static function findIdentityByAccessToken($token, $type = null) {
+        foreach(self::$users as $user) {
+            if($user['accessToken'] === $token) {
+
                 return new static($user);
             }
         }
@@ -53,13 +59,14 @@ class User extends Object implements IdentityInterface
     /**
      * Finds user by username
      *
-     * @param  string      $username
+     * @param  string $username
+     *
      * @return static|null
      */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
+    public static function findByUsername($username) {
+        foreach(self::$users as $user) {
+            if(strcasecmp($user['username'], $username) === 0) {
+
                 return new static($user);
             }
         }
@@ -70,35 +77,32 @@ class User extends Object implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey()
-    {
+    public function getAuthKey() {
         return $this->authKey;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
-    {
+    public function validateAuthKey($authKey) {
         return $this->authKey === $authKey;
     }
 
     /**
      * Validates password
      *
-     * @param  string  $password password to validate
+     * @param  string $password password to validate
+     *
      * @return boolean if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
+    public function validatePassword($password) {
 
         return $this->password === $password;
     }
@@ -129,16 +133,18 @@ class User extends Object implements IdentityInterface
 
         if(isset($user)) {
 
+            // Пользователь есть в базе
             return new static([
-                'id' => $user['id'],
-                'username' => $user['name'],
-                'password' => $user['name'],
-                'authKey' => $user['name'] . 'key',
+                'id'          => $user['id'],
+                'username'    => $user['name'],
+                'password'    => $user['name'],
+                'authKey'     => $user['name'] . 'key',
                 'accessToken' => $user['name'] . 'token',
             ]);
 
         } else {
 
+            // Неправильный логин
             return null;
         }
     }

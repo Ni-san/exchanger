@@ -12,24 +12,21 @@ use yii\db\ActiveRecord;
  * @property string $name
  * @property string $sum
  */
-class Users extends ActiveRecord
-{
+class Users extends ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'users';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name'], 'required'],
-            [['sum'], 'number'],
+            [['sum'],  'number'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -37,12 +34,11 @@ class Users extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' => 'ID',
+            'id'   => 'ID',
             'name' => 'Имя пользователя',
-            'sum' => 'Сумма на счёте',
+            'sum'  => 'Сумма на счёте',
         ];
     }
 
@@ -107,6 +103,7 @@ class Users extends ActiveRecord
 
         if($user === null) {
             $user = new self();
+
             $user->name = $name;
             $user->save();
         }

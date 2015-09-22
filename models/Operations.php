@@ -14,21 +14,18 @@ use yii\db\ActiveRecord;
  * @property string $sender
  * @property string $sum
  */
-class Operations extends ActiveRecord
-{
+class Operations extends ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'operations';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['recipient', 'sender', 'sum'], 'required'],
             [['sum'], 'number'],
@@ -39,12 +36,11 @@ class Operations extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' => 'ID',
+            'id'   => 'ID',
             'name' => 'Имя пользователя',
-            'sum' => 'Сумма на счёте',
+            'sum'  => 'Сумма на счёте',
         ];
     }
 
@@ -77,7 +73,9 @@ class Operations extends ActiveRecord
      * @throws Exception
      */
     public static function sendMoney($money, $recipient) {
+        // Проверка входных данных (только положительные числа)
         if(!preg_match('/^\d*\.?\d*$/', $money)) {
+
             return 'Введите положительное число';
         }
 
@@ -86,19 +84,20 @@ class Operations extends ActiveRecord
         $transaction->setIsolationLevel('SERIALIZABLE');
 
         try {
-
+            // Вычесть деньги у отправителя
             Users::sendMoney($money, Yii::$app->user->id);
+            // Прибавить полуателю
             Users::addMoney($money, $recipient);
 
-            $operation = new self();
-
+            // Записать операцию
+            $operation            = new self();
             $operation->sum       = $money;
             $operation->recipient = $recipient;
-
             $operation->link('sender', Users::findOne(Yii::$app->user->id));
 
             $transaction->commit();
 
+            // Ошибок нет
             return true;
         } catch(OperationException $e) {
             $transaction->rollback();
@@ -132,12 +131,12 @@ class Operations extends ActiveRecord
             ->all()
         ;
 
-        foreach ($operations as $key => $operation) {
+        // Операции без отправителя - начисление админом
+        foreach($operations as $key => $operation) {
             if(!isset($operation['sender']) || $operation['sender'] === null) {
-                $operations[$key]['sender']['name'] = 'admin';
+                $operations[ $key ]['sender']['name'] = 'admin';
             }
         }
-
 
         return $operations;
     }
@@ -155,6 +154,7 @@ class Operations extends ActiveRecord
      * @throws Exception
      */
     public static function giveMoney($recipient, $money) {
+
         $transaction = Yii::$app->db->beginTransaction();
         $transaction->setIsolationLevel('SERIALIZABLE');
 
@@ -168,6 +168,7 @@ class Operations extends ActiveRecord
             $operation->link('recipient', Users::findOne($recipient));
 
             $transaction->commit();
+
         } catch(OperationException $e) {
             $transaction->rollback();
 
