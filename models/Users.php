@@ -95,7 +95,11 @@ class Users extends ActiveRecord
         $user->save();
     }
 
-
+    /**
+     * Если имя уникально, создаётся новый юзер
+     *
+     * @param $name
+     */
     public static function addUser($name) {
         $user = self::find()
             ->where(['name' => $name])
