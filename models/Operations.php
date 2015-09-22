@@ -160,6 +160,7 @@ class Operations extends ActiveRecord
 
             $operation->link('recipient', Users::findOne($recipient));
 
+            $transaction->commit();
         } catch(OperationException $e) {
             $transaction->rollback();
 
