@@ -77,6 +77,10 @@ class Operations extends ActiveRecord
      * @throws Exception
      */
     public static function sendMoney($money, $recipient) {
+        if(!preg_match('/^\d*\.?\d*$/', $money)) {
+            return 'Введите положительное число';
+        }
+
 
         $transaction = Yii::$app->db->beginTransaction();
 

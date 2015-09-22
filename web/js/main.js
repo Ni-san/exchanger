@@ -22,8 +22,8 @@ function addMoney(id) {
     var moneyToAdd = jQuery('#add-money-' + id).val();
     moneyToAdd = moneyToAdd.replace(/,/, '.');
 
-    if(!/^-?\d*\.?\d*$/.test(moneyToAdd)) {
-        alert('Введите число');
+    if(!/^\d*\.?\d*$/.test(moneyToAdd)) {
+        alert('Введите положительное число');
         return;
     } else {
 
