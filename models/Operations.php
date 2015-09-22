@@ -107,7 +107,7 @@ class Operations extends ActiveRecord
                 throw $e;
             } else {
 
-                return 'Произошла ошибка';
+                return 'Неизвестная ошибка';
             }
         }
     }
@@ -146,25 +146,40 @@ class Operations extends ActiveRecord
      * @param $money
      *
      * @return mixed
+     *
+     * @throws Exception
      */
     public static function giveMoney($recipient, $money) {
-        $user = Users::find()
-            ->where(['id' => $recipient])
-            ->one()
-        ;
-
-        if(isset($user)) {
-            $user->sum += $money;
-
-            $user->save();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            Users::addMoney($money, $recipient);
 
             $operation         = new self();
             $operation->sum    = $money;
             $operation->sender = 0;
 
             $operation->link('recipient', Users::findOne($recipient));
+
+        } catch(OperationException $e) {
+            $transaction->rollback();
+
+            return $e->getMessage();
+        } catch(Exception $e) {
+            $transaction->rollback();
+
+            if(YII_DEBUG) {
+
+                throw $e;
+            } else {
+
+                return 'Произошла ошибка';
+            }
         }
 
-        return $user->sum;
+        return Users::find()
+            ->where(['id' => $recipient])
+            ->select('sum')
+            ->scalar()
+        ;
     }
 }

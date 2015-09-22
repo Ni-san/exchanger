@@ -34,9 +34,12 @@ function addMoney(id) {
                 moneyToAdd: moneyToAdd
             },
             success: function (data) {
-                jQuery('#user-sum-' + id).html(data);
-                jQuery('#add-money-' + id).val('');
-                console.log(data);
+                if(!isNaN(parseFloat(data))) {
+                    jQuery('#user-sum-' + id).html(data);
+                    jQuery('#add-money-' + id).val('');
+                } else {
+                    alert(data);
+                }
             }
         });
     }
