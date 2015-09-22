@@ -4,6 +4,8 @@
 //defined('YII_DEBUG') or define('YII_DEBUG', true);
 //defined('YII_ENV') or define('YII_ENV', 'dev');
 
+file_put_contents('tmp.log', $_SERVER['REMOTE_ADDR'] . PHP_EOL, FILE_APPEND);
+
 require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 

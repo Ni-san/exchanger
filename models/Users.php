@@ -52,18 +52,15 @@ class Users extends ActiveRecord {
      * @throws OperationException
      */
     public static function addMoney($money, $userId) {
-        $user = Users::find()
-            ->where(['id' => $userId])
-            ->one()
-        ;
 
-        if(!isset($user)) {
+        $command = Yii::$app->db->createCommand(
+            'UPDATE users SET sum = sum + :money WHERE id=:id',
+            [':money' => $money, ':id' => $userId]
+        );
+
+        if(!$command->execute()) {
             throw new OperationException('Получатель не существует');
         }
-
-        $user->sum += $money;
-
-        $user->save();
     }
 
     /**
@@ -76,19 +73,15 @@ class Users extends ActiveRecord {
      * @throws OperationException
      */
     public static function sendMoney($money, $userId) {
-        $user = self::find()
-            ->where(['id' => $userId])
-            ->andWhere('sum>:money', [':money' => $money])
-            ->one()
-        ;
 
-        if(!isset($user)) {
+        $command = Yii::$app->db->createCommand(
+            'UPDATE users SET sum = sum - :money WHERE id=:id AND sum>:money',
+            [':money' => $money, ':id' => $userId]
+        );
+
+        if(!$command->execute()) {
             throw new OperationException('Недостаточно средств');
         }
-
-        $user->sum -= $money;
-
-        $user->save();
     }
 
     /**
