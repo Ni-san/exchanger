@@ -39,7 +39,9 @@ $this->title = 'Admin';
         if(isset($users) && is_array($users)) {
             foreach($users as $user) { ?>
                 <tr>
-                    <td><?= $user['id'] ?></td>
+                    <?php if(YII_DEBUG) { ?>
+                        <td><?= $user['id'] ?></td>
+                    <?php } ?>
                     <td><?= $user['name'] ?></td>
                     <td>
                         <span id="user-sum-<?= $user['id'] ?>"><?= $user['sum'] ?></span>
