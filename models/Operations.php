@@ -83,6 +83,7 @@ class Operations extends ActiveRecord
 
 
         $transaction = Yii::$app->db->beginTransaction();
+        $transaction->setIsolationLevel('SERIALIZABLE');
 
         try {
 
@@ -155,6 +156,8 @@ class Operations extends ActiveRecord
      */
     public static function giveMoney($recipient, $money) {
         $transaction = Yii::$app->db->beginTransaction();
+        $transaction->setIsolationLevel('SERIALIZABLE');
+
         try {
             Users::addMoney($money, $recipient);
 
